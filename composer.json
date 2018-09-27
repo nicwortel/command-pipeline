@@ -8,7 +8,9 @@
     },
     "require-dev": {
         "jakub-onderka/php-console-highlighter": "^0.3.2",
-        "jakub-onderka/php-parallel-lint": "^1.0"
+        "jakub-onderka/php-parallel-lint": "^1.0",
+        "nicwortel/coding-standard": "^1.1",
+        "phpstan/phpstan": "^0.10.3"
     },
     "config": {
         "sort-packages": true
