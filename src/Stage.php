@@ -5,10 +5,5 @@ namespace NicWortel\CommandPipeline;
 
 interface Stage
 {
-    /**
-     * @param object $command
-     *
-     * @return object
-     */
-    public function process($command);
+    public function process(object $command): object;
 }

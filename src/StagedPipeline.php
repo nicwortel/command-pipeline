@@ -21,7 +21,7 @@ final class StagedPipeline implements CommandPipeline
     /**
      * @inheritdoc
      */
-    public function process($command): void
+    public function process(object $command): void
     {
         foreach ($this->stages as $stage) {
             $command = $stage->process($command);

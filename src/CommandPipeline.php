@@ -5,10 +5,5 @@ namespace NicWortel\CommandPipeline;
 
 interface CommandPipeline
 {
-    /**
-     * @param object $command
-     *
-     * @return void
-     */
-    public function process($command): void;
+    public function process(object $command): void;
 }
