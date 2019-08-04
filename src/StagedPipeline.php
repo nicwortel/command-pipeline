@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace NicWortel\CommandPipeline;
 
+use Assert\Assertion;
+
 final class StagedPipeline implements CommandPipeline
 {
     /**
@@ -15,6 +17,8 @@ final class StagedPipeline implements CommandPipeline
      */
     public function __construct(array $stages)
     {
+        Assertion::allIsInstanceOf($stages, Stage::class);
+
         $this->stages = $stages;
     }
 
