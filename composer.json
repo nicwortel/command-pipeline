@@ -4,7 +4,7 @@
     "description": "A command pipeline for PHP",
     "license": "MIT",
     "require": {
-        "php": "^7.1"
+        "php": "^7.2"
     },
     "require-dev": {
         "jakub-onderka/php-console-highlighter": "^0.3.2",
