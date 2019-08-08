@@ -6,6 +6,7 @@
     "require": {
         "php": "^7.2",
         "beberlei/assert": "^3.2",
+        "doctrine/orm": "^2.6",
         "psr/log": "^1.1",
         "symfony/validator": "^4.3"
     },
