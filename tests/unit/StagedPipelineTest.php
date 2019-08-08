@@ -14,7 +14,7 @@ class StagedPipelineTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testThatACommandIsPassedToAStage(): void
+    public function testPassesCommandsToStage(): void
     {
         $command = new stdClass();
         $stage = Mockery::spy(Stage::class);
@@ -26,7 +26,7 @@ class StagedPipelineTest extends TestCase
         $stage->shouldHaveReceived('process', [$command]);
     }
 
-    public function testThatItPassesACommandThroughMultipleStagesInTheCorrectOrder(): void
+    public function testPassesCommandsThroughMultipleStagesInCorrectOrder(): void
     {
         $command = new stdClass();
         $stage1 = Mockery::mock(Stage::class)
@@ -49,7 +49,7 @@ class StagedPipelineTest extends TestCase
         $pipeline->process($command);
     }
 
-    public function testThatItPassesTheOutputOfThePreviousStageToTheNext(): void
+    public function testPassesTheOutputOfThePreviousStageToTheNext(): void
     {
         $command = new stdClass();
         $stage1 = Mockery::mock(Stage::class)->shouldReceive('process')->andReturn($command)->getMock();
