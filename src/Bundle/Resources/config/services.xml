@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+        https://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults public="false"/>
+
+        <service id="nicwortel.command_pipeline.default" class="NicWortel\CommandPipeline\StagedPipeline">
+            <argument type="collection">
+                <argument type="service" id="nicwortel.command_pipeline.stage.validation"/>
+                <argument type="service" id="nicwortel.command_pipeline.stage.command_handling"/>
+            </argument>
+            <argument type="service" id="logger"/>
+        </service>
+
+        <service id="nicwortel.command_pipeline.stage.validation"
+                 class="NicWortel\CommandPipeline\Validation\ValidationStage">
+            <argument type="service" id="validator"/>
+            <argument type="service" id="logger"/>
+        </service>
+
+        <service id="nicwortel.command_pipeline.stage.command_handling"
+                 class="NicWortel\CommandPipeline\CommandHandlingStage">
+            <argument type="service" id="command_bus"/>
+        </service>
+
+        <service id="nicwortel.command_pipeline.transactional_decorator"
+                 class="NicWortel\CommandPipeline\Doctrine\TransactionalPipelineDecorator"
+                 decorates="nicwortel.command_pipeline.default">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="nicwortel.command_pipeline.transactional_decorator.inner"/>
+            <argument type="service" id="logger"/>
+        </service>
+
+        <service alias="nicwortel.command_pipeline.transactional_decorator" id="command_pipeline" public="true"/>
+    </services>
+
+</container>
