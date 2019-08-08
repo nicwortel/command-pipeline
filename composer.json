@@ -8,6 +8,7 @@
         "beberlei/assert": "^3.2",
         "doctrine/orm": "^2.6",
         "psr/log": "^1.1",
+        "simple-bus/message-bus": "^3.0",
         "symfony/validator": "^4.3"
     },
     "require-dev": {
