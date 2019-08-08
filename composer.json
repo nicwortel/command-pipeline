@@ -6,9 +6,12 @@
     "require": {
         "php": "^7.2",
         "beberlei/assert": "^3.2",
-        "psr/log": "^1.1"
+        "psr/log": "^1.1",
+        "symfony/validator": "^4.3"
     },
     "require-dev": {
+        "doctrine/annotations": "^1.6",
+        "doctrine/cache": "^1.8",
         "jakub-onderka/php-console-highlighter": "^0.4.0",
         "jakub-onderka/php-parallel-lint": "^1.0",
         "mockery/mockery": "^1.1",
@@ -26,7 +29,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "NicWortel\\CommandPipeline\\Tests\\Unit\\": "tests/unit"
+            "NicWortel\\CommandPipeline\\Tests\\Unit\\": "tests/unit",
+            "NicWortel\\CommandPipeline\\Tests\\Integration\\": "tests/integration"
         }
     }
 }
