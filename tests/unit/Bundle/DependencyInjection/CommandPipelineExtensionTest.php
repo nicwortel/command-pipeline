@@ -5,7 +5,7 @@ namespace NicWortel\CommandPipeline\Tests\Unit\Bundle\DependencyInjection;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use NicWortel\CommandPipeline\Bundle\DependencyInjection\CommandPipelineExtension;
-use NicWortel\CommandPipeline\Doctrine\TransactionalPipelineDecorator;
+use NicWortel\CommandPipeline\StagedPipeline;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -15,29 +15,18 @@ class CommandPipelineExtensionTest extends AbstractExtensionTestCase
     {
         $this->load();
 
-        $this->assertContainerBuilderHasService('command_pipeline', TransactionalPipelineDecorator::class);
+        $this->assertContainerBuilderHasService('command_pipeline', StagedPipeline::class);
 
         $this->assertContainerBuilderHasServiceDefinitionWithArgument(
-            'nicwortel.command_pipeline.transactional_decorator',
-            0,
-            new Reference('doctrine.orm.entity_manager')
-        );
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument(
-            'nicwortel.command_pipeline.transactional_decorator',
-            2,
-            new Reference('logger')
-        );
-
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument(
-            'nicwortel.command_pipeline.default',
+            'nicwortel.command_pipeline',
             0,
             [
                 new Reference('nicwortel.command_pipeline.stage.validation'),
-                new Reference('nicwortel.command_pipeline.stage.command_handling'),
+                new Reference('nicwortel.command_pipeline.stage.transactional_decorator'),
             ]
         );
         $this->assertContainerBuilderHasServiceDefinitionWithArgument(
-            'nicwortel.command_pipeline.default',
+            'nicwortel.command_pipeline',
             1,
             new Reference('logger')
         );

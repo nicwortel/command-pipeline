@@ -6,15 +6,15 @@ namespace NicWortel\CommandPipeline\Tests\Unit\Doctrine;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Mockery;
-use NicWortel\CommandPipeline\CommandPipeline;
-use NicWortel\CommandPipeline\Doctrine\TransactionalPipelineDecorator;
+use NicWortel\CommandPipeline\Doctrine\TransactionalStageDecorator;
+use NicWortel\CommandPipeline\Stage;
 use NicWortel\CommandPipeline\Tests\Integration\Validation\CommandStub;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Psr\Log\Test\TestLogger;
 use Throwable;
 
-class TransactionalPipelineDecoratorTest extends TestCase
+class TransactionalStageDecoratorTest extends TestCase
 {
     use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
@@ -24,28 +24,28 @@ class TransactionalPipelineDecoratorTest extends TestCase
     private $entityManager;
 
     /**
-     * @var Mockery\MockInterface|CommandPipeline
+     * @var Mockery\MockInterface|Stage
      */
-    private $innerPipeline;
+    private $wrappedStage;
 
     protected function setUp(): void
     {
         $this->entityManager = Mockery::spy(EntityManagerInterface::class);
-        $this->innerPipeline = Mockery::spy(CommandPipeline::class);
+        $this->wrappedStage = Mockery::spy(Stage::class);
     }
 
     public function testFlushesTheEntityManagerAfterHandlingACommand(): void
     {
-        $pipeline = new TransactionalPipelineDecorator($this->entityManager, $this->innerPipeline, new NullLogger());
+        $stage = new TransactionalStageDecorator($this->entityManager, $this->wrappedStage, new NullLogger());
 
-        $pipeline->process(new CommandStub());
+        $stage->process(new CommandStub());
 
         $this->entityManager->shouldHaveReceived('flush');
     }
 
     public function testHandlesTheCommandWithinATransaction(): void
     {
-        $pipeline = new TransactionalPipelineDecorator($this->entityManager, $this->innerPipeline, new NullLogger());
+        $pipeline = new TransactionalStageDecorator($this->entityManager, $this->wrappedStage, new NullLogger());
 
         $pipeline->process(new CommandStub());
 
@@ -55,9 +55,9 @@ class TransactionalPipelineDecoratorTest extends TestCase
 
     public function testRollsBackTheTransactionIfHandlingTheCommandFailed(): void
     {
-        $pipeline = new TransactionalPipelineDecorator($this->entityManager, $this->innerPipeline, new NullLogger());
+        $pipeline = new TransactionalStageDecorator($this->entityManager, $this->wrappedStage, new NullLogger());
 
-        $this->innerPipeline->shouldReceive('process')->andThrow(new Exception());
+        $this->wrappedStage->shouldReceive('process')->andThrow(new Exception());
 
         try {
             $pipeline->process(new CommandStub());
@@ -71,9 +71,9 @@ class TransactionalPipelineDecoratorTest extends TestCase
     public function testLogsErrorWhenHandlingTheCommandHasFailed(): void
     {
         $logger = new TestLogger();
-        $pipeline = new TransactionalPipelineDecorator($this->entityManager, $this->innerPipeline, $logger);
+        $pipeline = new TransactionalStageDecorator($this->entityManager, $this->wrappedStage, $logger);
 
-        $this->innerPipeline->shouldReceive('process')->andThrow(new Exception());
+        $this->wrappedStage->shouldReceive('process')->andThrow(new Exception());
 
         try {
             $pipeline->process(new CommandStub());
@@ -89,9 +89,9 @@ class TransactionalPipelineDecoratorTest extends TestCase
 
     public function testRethrowsTheException(): void
     {
-        $pipeline = new TransactionalPipelineDecorator($this->entityManager, $this->innerPipeline, new NullLogger());
+        $pipeline = new TransactionalStageDecorator($this->entityManager, $this->wrappedStage, new NullLogger());
 
-        $this->innerPipeline->shouldReceive('process')->andThrow(new Exception());
+        $this->wrappedStage->shouldReceive('process')->andThrow(new Exception());
 
         $this->expectException(Exception::class);
 

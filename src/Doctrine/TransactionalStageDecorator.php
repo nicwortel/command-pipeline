@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace NicWortel\CommandPipeline\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
-use NicWortel\CommandPipeline\CommandPipeline;
+use NicWortel\CommandPipeline\Stage;
 use Psr\Log\LoggerInterface;
 use Throwable;
 use function get_class;
 
-final class TransactionalPipelineDecorator implements CommandPipeline
+final class TransactionalStageDecorator implements Stage
 {
     /**
      * @var EntityManagerInterface
@@ -17,31 +17,28 @@ final class TransactionalPipelineDecorator implements CommandPipeline
     private $entityManager;
 
     /**
-     * @var CommandPipeline
+     * @var Stage
      */
-    private $innerPipeline;
+    private $wrappedStage;
 
     /**
      * @var LoggerInterface
      */
     private $logger;
 
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        CommandPipeline $innerPipeline,
-        LoggerInterface $logger
-    ) {
+    public function __construct(EntityManagerInterface $entityManager, Stage $wrappedStage, LoggerInterface $logger)
+    {
         $this->entityManager = $entityManager;
-        $this->innerPipeline = $innerPipeline;
+        $this->wrappedStage = $wrappedStage;
         $this->logger = $logger;
     }
 
-    public function process(object $command): void
+    public function process(object $command): object
     {
         $this->entityManager->beginTransaction();
 
         try {
-            $this->innerPipeline->process($command);
+            $command = $this->wrappedStage->process($command);
 
             $this->entityManager->flush();
             $this->entityManager->commit();
@@ -58,5 +55,7 @@ final class TransactionalPipelineDecorator implements CommandPipeline
 
             throw $error;
         }
+
+        return $command;
     }
 }

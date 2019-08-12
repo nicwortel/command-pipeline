@@ -7,10 +7,10 @@
     <services>
         <defaults public="false"/>
 
-        <service id="nicwortel.command_pipeline.default" class="NicWortel\CommandPipeline\StagedPipeline">
+        <service id="nicwortel.command_pipeline" class="NicWortel\CommandPipeline\StagedPipeline">
             <argument type="collection">
                 <argument type="service" id="nicwortel.command_pipeline.stage.validation"/>
-                <argument type="service" id="nicwortel.command_pipeline.stage.command_handling"/>
+                <argument type="service" id="nicwortel.command_pipeline.stage.transactional_decorator"/>
             </argument>
             <argument type="service" id="logger"/>
         </service>
@@ -26,15 +26,15 @@
             <argument type="service" id="command_bus"/>
         </service>
 
-        <service id="nicwortel.command_pipeline.transactional_decorator"
-                 class="NicWortel\CommandPipeline\Doctrine\TransactionalPipelineDecorator"
-                 decorates="nicwortel.command_pipeline.default">
+        <service id="nicwortel.command_pipeline.stage.transactional_decorator"
+                 class="NicWortel\CommandPipeline\Doctrine\TransactionalStageDecorator"
+                 decorates="nicwortel.command_pipeline.stage.command_handling">
             <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="nicwortel.command_pipeline.transactional_decorator.inner"/>
+            <argument type="service" id="nicwortel.command_pipeline.stage.transactional_decorator.inner"/>
             <argument type="service" id="logger"/>
         </service>
 
-        <service alias="nicwortel.command_pipeline.transactional_decorator" id="command_pipeline" public="true"/>
+        <service id="command_pipeline" alias="nicwortel.command_pipeline" public="true"/>
     </services>
 
 </container>
