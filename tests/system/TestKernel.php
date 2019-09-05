@@ -1,16 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace NicWortel\CommandPipeline\Tests\Integration;
+namespace NicWortel\CommandPipeline\Tests\System;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use NicWortel\CommandPipeline\Bundle\CommandPipelineBundle;
+use NicWortel\CommandPipeline\Tests\Integration\Validation\CommandStub;
+use Psr\Log\NullLogger;
 use SimpleBus\SymfonyBridge\SimpleBusCommandBusBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
+use function getenv;
 
 final class TestKernel extends Kernel
 {
@@ -38,20 +42,32 @@ final class TestKernel extends Kernel
             function (ContainerBuilder $container): void {
                 $container->setParameter('kernel.secret', 'foo');
 
+                $container->register('logger', NullLogger::class);
+
+                $container->register('command_handler', CommandHandlerStub::class)
+                    ->addArgument(new Reference('doctrine.orm.entity_manager'))
+                    ->addTag('command_handler', ['handles' => CommandStub::class]);
+
                 $container->loadFromExtension(
                     'doctrine',
                     [
                         'dbal' => [
                             'connections' => [
                                 'default' => [
-                                    'url' => 'mysql://user:password@127.0.0.1:3306/test?charset=utf8mb4&serverVersion=5.7',
+                                    'url' => getenv('DATABASE_URL'),
                                 ],
                             ],
                         ],
                         'orm' => [
                             'entity_managers' => [
                                 'default' => [
-
+                                    'mappings' => [
+                                        'default' => [
+                                            'type' => 'annotation',
+                                            'dir' => __DIR__ . '/../system/Entity/',
+                                            'prefix' => 'NicWortel\CommandPipeline\Tests\System\Entity',
+                                        ],
+                                    ],
                                 ],
                             ],
                         ],

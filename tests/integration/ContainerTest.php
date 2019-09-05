@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace NicWortel\CommandPipeline\Tests\Integration;
 
 use NicWortel\CommandPipeline\StagedPipeline;
+use NicWortel\CommandPipeline\Tests\System\TestKernel;
 use PHPUnit\Framework\TestCase;
 
 class ContainerTest extends TestCase
