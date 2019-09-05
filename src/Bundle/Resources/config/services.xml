@@ -10,6 +10,7 @@
         <service id="nicwortel.command_pipeline" class="NicWortel\CommandPipeline\StagedPipeline">
             <argument type="collection">
                 <argument type="service" id="nicwortel.command_pipeline.stage.validation"/>
+                <argument type="service" id="nicwortel.command_pipeline.stage.authorization"/>
                 <argument type="service" id="nicwortel.command_pipeline.stage.transactional_decorator"/>
                 <argument type="service" id="nicwortel.command_pipeline.stage.event_dispatching"/>
             </argument>
@@ -19,6 +20,12 @@
         <service id="nicwortel.command_pipeline.stage.validation"
                  class="NicWortel\CommandPipeline\Validation\ValidationStage">
             <argument type="service" id="validator"/>
+            <argument type="service" id="logger"/>
+        </service>
+
+        <service id="nicwortel.command_pipeline.stage.authorization"
+                 class="NicWortel\CommandPipeline\Authorization\AuthorizationStage">
+            <argument type="service" id="security.authorization_checker"/>
             <argument type="service" id="logger"/>
         </service>
 
