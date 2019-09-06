@@ -10,7 +10,7 @@
         "doctrine/orm": "^2.6",
         "psr/log": "^1.1",
         "simple-bus/message-bus": "^3.0",
-        "simple-bus/symfony-bridge": "^5.3",
+        "simple-bus/symfony-bridge": "^5.0",
         "symfony/config": "^4.0",
         "symfony/dependency-injection": "^4.0",
         "symfony/http-kernel": "^4.0",
