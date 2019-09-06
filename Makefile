@@ -1,5 +1,8 @@
-vendor: composer.json $(wildcard composer.lock)
+vendor: composer.lock
 	composer install
+
+composer.lock: composer.json
+	composer update
 
 .PHONY: check lint static-analysis unit-tests coding-standards
 check: lint static-analysis unit-tests coding-standards
