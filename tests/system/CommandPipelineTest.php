@@ -61,6 +61,23 @@ class CommandPipelineTest extends TestCase
         $this->assertSame('info@example.com', $entities[0]->emailAddress);
     }
 
+    public function testPublishesEventsAfterHandlingTheCommand(): void
+    {
+        $kernel = $this->createKernel();
+        $container = $kernel->getContainer();
+        $commandPipeline = $container->get('command_pipeline');
+
+        $command = new CommandStub();
+        $command->emailAddress = 'info@example.com';
+
+        $commandPipeline->process($command);
+
+        /** @var EventSubscriberStub $eventSubscriber */
+        $eventSubscriber = $container->get('event_subscriber');
+
+        $this->assertInstanceOf(DummyEvent::class, $eventSubscriber->getEvent());
+    }
+
     private function createKernel(): KernelInterface
     {
         $kernel = new TestKernel();

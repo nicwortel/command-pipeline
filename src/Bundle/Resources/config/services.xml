@@ -11,6 +11,7 @@
             <argument type="collection">
                 <argument type="service" id="nicwortel.command_pipeline.stage.validation"/>
                 <argument type="service" id="nicwortel.command_pipeline.stage.transactional_decorator"/>
+                <argument type="service" id="nicwortel.command_pipeline.stage.event_dispatching"/>
             </argument>
             <argument type="service" id="logger"/>
         </service>
@@ -32,6 +33,16 @@
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="nicwortel.command_pipeline.stage.transactional_decorator.inner"/>
             <argument type="service" id="logger"/>
+        </service>
+
+        <service id="nicwortel.command_pipeline.buffered_event_bus"
+                 class="NicWortel\CommandPipeline\EventHandling\SimpleBusBufferedEventBus">
+            <argument type="service" id="event_bus"/>
+        </service>
+
+        <service id="nicwortel.command_pipeline.stage.event_dispatching"
+                 class="NicWortel\CommandPipeline\EventHandling\EventDispatchingStage">
+            <argument type="service" id="nicwortel.command_pipeline.buffered_event_bus"/>
         </service>
 
         <service id="command_pipeline" alias="nicwortel.command_pipeline" public="true"/>

@@ -6,6 +6,7 @@ namespace NicWortel\CommandPipeline\Tests\System;
 use Doctrine\ORM\EntityManagerInterface;
 use NicWortel\CommandPipeline\Tests\Integration\Validation\CommandStub;
 use NicWortel\CommandPipeline\Tests\System\Entity\TestEntity;
+use SimpleBus\Message\Bus\MessageBus;
 
 final class CommandHandlerStub
 {
@@ -14,9 +15,15 @@ final class CommandHandlerStub
      */
     private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    /**
+     * @var MessageBus
+     */
+    private $eventBus;
+
+    public function __construct(EntityManagerInterface $entityManager, MessageBus $eventBus)
     {
         $this->entityManager = $entityManager;
+        $this->eventBus = $eventBus;
     }
 
     public function handle(CommandStub $command): void
@@ -25,5 +32,9 @@ final class CommandHandlerStub
         $entity->emailAddress = $command->emailAddress;
 
         $this->entityManager->persist($entity);
+
+        $event = new DummyEvent();
+
+        $this->eventBus->handle($event);
     }
 }

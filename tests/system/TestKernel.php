@@ -8,6 +8,7 @@ use NicWortel\CommandPipeline\Bundle\CommandPipelineBundle;
 use NicWortel\CommandPipeline\Tests\Integration\Validation\CommandStub;
 use Psr\Log\NullLogger;
 use SimpleBus\SymfonyBridge\SimpleBusCommandBusBundle;
+use SimpleBus\SymfonyBridge\SimpleBusEventBusBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -32,6 +33,7 @@ final class TestKernel extends Kernel
             new FrameworkBundle(),
             new DoctrineBundle(),
             new SimpleBusCommandBusBundle(),
+            new SimpleBusEventBusBundle(),
             new CommandPipelineBundle(),
         ];
     }
@@ -46,7 +48,12 @@ final class TestKernel extends Kernel
 
                 $container->register('command_handler', CommandHandlerStub::class)
                     ->addArgument(new Reference('doctrine.orm.entity_manager'))
+                    ->addArgument(new Reference('event_bus'))
                     ->addTag('command_handler', ['handles' => CommandStub::class]);
+
+                $container->register('event_subscriber', EventSubscriberStub::class)
+                    ->setPublic(true)
+                    ->addTag('event_subscriber', ['subscribes_to' => DummyEvent::class]);
 
                 $container->loadFromExtension(
                     'doctrine',
