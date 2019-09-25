@@ -10,22 +10,21 @@ final class SecurityAwareCommandStub implements SecurityAwareCommand
     /**
      * @var string[]
      */
-    private $allowedRoles;
+    private static $allowedRoles = [];
 
     /**
      * @param string[] $allowedRoles
      */
-    public function __construct(array $allowedRoles)
+    public static function setAllowedRoles(array $allowedRoles): void
     {
-        $this->allowedRoles = $allowedRoles;
+        self::$allowedRoles = $allowedRoles;
     }
 
     /**
-     * @return string[] A list of roles that are allowed to execute this command. The current user needs to have at
-     *                  least one of these roles.
+     * @inheritDoc
      */
-    public function getRolesAllowedToExecuteCommand(): array
+    public static function getRolesAllowedToExecuteCommand(): array
     {
-        return $this->allowedRoles;
+        return self::$allowedRoles;
     }
 }

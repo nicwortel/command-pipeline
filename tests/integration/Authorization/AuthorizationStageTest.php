@@ -53,9 +53,11 @@ class AuthorizationStageTest extends TestCase
         $stage = new AuthorizationStage($this->authorizationChecker, new NullLogger());
         $this->tokenStorage->setToken(new UsernamePasswordToken('user', [], 'provider', ['ROLE_USER']));
 
+        SecurityAwareCommandStub::setAllowedRoles(['ROLE_ADMIN']);
+
         $this->expectException(ForbiddenException::class);
 
-        $stage->process(new SecurityAwareCommandStub(['ROLE_ADMIN']));
+        $stage->process(new SecurityAwareCommandStub());
     }
 
     public function testReturnsTheCommandIfTheUserIsAuthorizedToExecuteIt(): void
@@ -63,7 +65,9 @@ class AuthorizationStageTest extends TestCase
         $stage = new AuthorizationStage($this->authorizationChecker, new NullLogger());
         $this->tokenStorage->setToken(new UsernamePasswordToken('user', [], 'provider', ['ROLE_ADMIN']));
 
-        $command = new SecurityAwareCommandStub(['ROLE_ADMIN']);
+        SecurityAwareCommandStub::setAllowedRoles(['ROLE_ADMIN']);
+
+        $command = new SecurityAwareCommandStub();
 
         $result = $stage->process($command);
 
@@ -75,7 +79,9 @@ class AuthorizationStageTest extends TestCase
         $stage = new AuthorizationStage($this->authorizationChecker, new NullLogger());
         $this->tokenStorage->setToken(new UsernamePasswordToken('user', [], 'provider', ['ROLE_ADMIN']));
 
-        $command = new SecurityAwareCommandStub(['ROLE_ADMIN', 'ROLE_OTHER_ROLE']);
+        SecurityAwareCommandStub::setAllowedRoles(['ROLE_ADMIN', 'ROLE_OTHER_ROLE']);
+
+        $command = new SecurityAwareCommandStub();
 
         $result = $stage->process($command);
 
