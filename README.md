@@ -8,6 +8,10 @@ Commands are processed in a linear process. The return value of each stage is
 passed to the next. A stage can only prevent the next stage from being executed
 by throwing an exception.
 
+The concept of the command pipeline is loosely based on the
+[Pipes and Filters](https://www.enterpriseintegrationpatterns.com/patterns/messaging/PipesAndFilters.html)
+pattern.
+
 ## Features
 
 - Command validation
