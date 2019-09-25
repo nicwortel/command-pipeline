@@ -8,6 +8,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use function get_class;
+use function sprintf;
 use const PHP_SAPI;
 
 final class AuthorizationStage implements Stage
@@ -40,24 +41,42 @@ final class AuthorizationStage implements Stage
     public function process(object $command): object
     {
         if (!$command instanceof SecurityAwareCommand) {
+            $this->logger->debug(
+                'The command does not implement the SecurityAwareCommand interface, skipping authorization check.'
+            );
+
             return $command;
         }
 
         if (PHP_SAPI === 'cli' && $this->tokenStorage->getToken() === null) {
+            $this->logger->debug(
+                'The command pipeline is executed from the CLI and there is no authenticated user,' .
+                ' skipping authorization check.'
+            );
+
             return $command;
         }
 
         if (!$this->authorizationChecker->isGranted($command->getRolesAllowedToExecuteCommand())) {
+            $token = $this->tokenStorage->getToken();
+
             $this->logger->error(
-                'User tried to execute command, but does not have the required role(s)',
+                sprintf(
+                    'The current user does not have (one of) the role(s) required to execute the "%s" command, ' .
+                    'aborting processing.',
+                    get_class($command)
+                ),
                 [
-                    'command' => get_class($command),
+                    'username' => $token ? $token->getUsername() : null,
+                    'user_roles' => $token ? $token->getRoleNames() : null,
                     'allowed_roles' => $command->getRolesAllowedToExecuteCommand(),
                 ]
             );
 
             throw ForbiddenException::forCommand(get_class($command));
         }
+
+        $this->logger->debug('The authenticated user is authorized to execute the command, continuing.');
 
         return $command;
     }
