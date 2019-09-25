@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace NicWortel\CommandPipeline\Tests\System;
 
 use Doctrine\ORM\EntityManagerInterface;
-use NicWortel\CommandPipeline\Tests\Integration\Validation\CommandStub;
 use NicWortel\CommandPipeline\Tests\System\Entity\TestEntity;
 use SimpleBus\Message\Bus\MessageBus;
 

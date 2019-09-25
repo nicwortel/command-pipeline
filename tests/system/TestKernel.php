@@ -5,11 +5,11 @@ namespace NicWortel\CommandPipeline\Tests\System;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use NicWortel\CommandPipeline\Bundle\CommandPipelineBundle;
-use NicWortel\CommandPipeline\Tests\Integration\Validation\CommandStub;
 use Psr\Log\NullLogger;
 use SimpleBus\SymfonyBridge\SimpleBusCommandBusBundle;
 use SimpleBus\SymfonyBridge\SimpleBusEventBusBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
+use Symfony\Bundle\SecurityBundle\SecurityBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -30,6 +30,7 @@ final class TestKernel extends Kernel
     public function registerBundles(): iterable
     {
         return [
+            new SecurityBundle(),
             new FrameworkBundle(),
             new DoctrineBundle(),
             new SimpleBusCommandBusBundle(),
@@ -76,6 +77,20 @@ final class TestKernel extends Kernel
                                         ],
                                     ],
                                 ],
+                            ],
+                        ],
+                    ]
+                );
+
+                $container->setParameter('request_listener.http_port', 80);
+                $container->setParameter('request_listener.https_port', 443);
+
+                $container->loadFromExtension(
+                    'security',
+                    [
+                        'firewalls' => [
+                            'stub' => [
+                                'http_basic' => null,
                             ],
                         ],
                     ]
