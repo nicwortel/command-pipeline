@@ -74,7 +74,7 @@ class StagedPipelineTest extends TestCase
 
         $pipeline->process($command);
 
-        $logger->shouldHaveReceived('debug', ['Started processing a command', ['command' => stdClass::class]]);
-        $logger->shouldHaveReceived('debug', ['Finished processing a command', ['command' => stdClass::class]]);
+        $logger->shouldHaveReceived('debug', ['The command pipeline started processing a new "stdClass" command.']);
+        $logger->shouldHaveReceived('debug', ['The command pipeline successfully processed the "stdClass" command.']);
     }
 }

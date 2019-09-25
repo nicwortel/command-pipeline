@@ -35,6 +35,8 @@ final class TransactionalStageDecorator implements Stage
 
     public function process(object $command): object
     {
+        $this->logger->debug('Starting a new database transaction.');
+
         $this->entityManager->beginTransaction();
 
         try {
@@ -42,9 +44,11 @@ final class TransactionalStageDecorator implements Stage
 
             $this->entityManager->flush();
             $this->entityManager->commit();
+
+            $this->logger->debug('Flushed the entity manager and committed the database transaction.');
         } catch (Throwable $error) {
             $this->logger->error(
-                'An exception was thrown while handling the command, rolling back the transaction',
+                'An exception was thrown while handling the command. Rolling back the transaction.',
                 [
                     'command' => get_class($command),
                     'error' => $error->getMessage(),

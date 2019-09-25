@@ -38,12 +38,14 @@ final class ValidationStage implements Stage
 
         if (count($violations) > 0) {
             $this->logger->error(
-                'The command is invalid',
+                'The command is invalid, aborting processing.',
                 ['command' => get_class($command), 'violations' => $violations]
             );
 
             throw new InvalidCommandException($violations);
         }
+
+        $this->logger->debug('The command passed validation.');
 
         return $command;
     }

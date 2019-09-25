@@ -82,7 +82,7 @@ class TransactionalStageDecoratorTest extends TestCase
 
         $this->assertTrue(
             $logger->hasError(
-                ['message' => 'An exception was thrown while handling the command, rolling back the transaction']
+                ['message' => 'An exception was thrown while handling the command. Rolling back the transaction.']
             )
         );
     }

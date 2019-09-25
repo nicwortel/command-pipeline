@@ -82,7 +82,7 @@ class ValidationStageTest extends TestCase
         $this->assertTrue(
             $logger->hasError(
                 [
-                    'message' => 'The command is invalid',
+                    'message' => 'The command is invalid, aborting processing.',
                     'context' => [
                         'command' => CommandStub::class,
                         'violations' => ['emailAddress' => ['This value is not a valid email address.']],

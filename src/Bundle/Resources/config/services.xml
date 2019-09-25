@@ -25,6 +25,7 @@
         <service id="nicwortel.command_pipeline.stage.command_handling"
                  class="NicWortel\CommandPipeline\CommandHandlingStage">
             <argument type="service" id="command_bus"/>
+            <argument type="service" id="logger"/>
         </service>
 
         <service id="nicwortel.command_pipeline.stage.transactional_decorator"
@@ -43,6 +44,7 @@
         <service id="nicwortel.command_pipeline.stage.event_dispatching"
                  class="NicWortel\CommandPipeline\EventHandling\EventDispatchingStage">
             <argument type="service" id="nicwortel.command_pipeline.buffered_event_bus"/>
+            <argument type="service" id="logger"/>
         </service>
 
         <service id="command_pipeline" alias="nicwortel.command_pipeline" public="true"/>

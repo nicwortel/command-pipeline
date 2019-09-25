@@ -8,6 +8,7 @@ use NicWortel\CommandPipeline\EventHandling\BufferedEventBus;
 use NicWortel\CommandPipeline\EventHandling\EventDispatchingStage;
 use NicWortel\CommandPipeline\Tests\Integration\Validation\CommandStub;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 
 class EventDispatchingStageTest extends TestCase
 {
@@ -17,7 +18,7 @@ class EventDispatchingStageTest extends TestCase
     {
         $eventBus = Mockery::spy(BufferedEventBus::class);
 
-        $stage = new EventDispatchingStage($eventBus);
+        $stage = new EventDispatchingStage($eventBus, new NullLogger());
 
         $command = new CommandStub();
 
