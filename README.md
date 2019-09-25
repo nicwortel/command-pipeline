@@ -15,6 +15,7 @@ pattern.
 ## Features
 
 - Command validation
+- Command authorization
 - Wrapping command handling in a Doctrine database transaction
 - Dispatching emitted domain events to an event bus
 
