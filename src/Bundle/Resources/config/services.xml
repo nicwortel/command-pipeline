@@ -26,6 +26,7 @@
         <service id="nicwortel.command_pipeline.stage.authorization"
                  class="NicWortel\CommandPipeline\Authorization\AuthorizationStage">
             <argument type="service" id="security.authorization_checker"/>
+            <argument type="service" id="security.token_storage"/>
             <argument type="service" id="logger"/>
         </service>
 

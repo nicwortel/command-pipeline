@@ -5,8 +5,10 @@ namespace NicWortel\CommandPipeline\Authorization;
 
 use NicWortel\CommandPipeline\Stage;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use function get_class;
+use const PHP_SAPI;
 
 final class AuthorizationStage implements Stage
 {
@@ -16,19 +18,32 @@ final class AuthorizationStage implements Stage
     private $authorizationChecker;
 
     /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
+
+    /**
      * @var LoggerInterface
      */
     private $logger;
 
-    public function __construct(AuthorizationCheckerInterface $authorizationChecker, LoggerInterface $logger)
-    {
+    public function __construct(
+        AuthorizationCheckerInterface $authorizationChecker,
+        TokenStorageInterface $tokenStorage,
+        LoggerInterface $logger
+    ) {
         $this->authorizationChecker = $authorizationChecker;
+        $this->tokenStorage = $tokenStorage;
         $this->logger = $logger;
     }
 
     public function process(object $command): object
     {
         if (!$command instanceof SecurityAwareCommand) {
+            return $command;
+        }
+
+        if (PHP_SAPI === 'cli' && $this->tokenStorage->getToken() === null) {
             return $command;
         }
 

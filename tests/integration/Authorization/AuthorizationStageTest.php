@@ -39,18 +39,28 @@ class AuthorizationStageTest extends TestCase
         );
     }
 
-    public function testSkipsCommandsThatAreNotSecurityAware(): void
+    public function testContinuesForCommandsThatAreNotSecurityAware(): void
     {
-        $stage = new AuthorizationStage($this->authorizationChecker, new NullLogger());
+        $stage = new AuthorizationStage($this->authorizationChecker, $this->tokenStorage, new NullLogger());
+        $this->tokenStorage->setToken(new UsernamePasswordToken('user', [], 'provider', []));
 
         $command = new CommandStub();
 
         $this->assertSame($command, $stage->process($command));
     }
 
+    public function testContinuesWhenCalledFromTheCommandLineAndNoSecurityTokenIsSet(): void
+    {
+        $stage = new AuthorizationStage($this->authorizationChecker, $this->tokenStorage, new NullLogger());
+
+        $command = new SecurityAwareCommandStub();
+
+        $this->assertSame($command, $stage->process($command));
+    }
+
     public function testFailsIfTheUserIsNotAuthorizedToExecuteTheCommand(): void
     {
-        $stage = new AuthorizationStage($this->authorizationChecker, new NullLogger());
+        $stage = new AuthorizationStage($this->authorizationChecker, $this->tokenStorage, new NullLogger());
         $this->tokenStorage->setToken(new UsernamePasswordToken('user', [], 'provider', ['ROLE_USER']));
 
         SecurityAwareCommandStub::setAllowedRoles(['ROLE_ADMIN']);
@@ -62,7 +72,7 @@ class AuthorizationStageTest extends TestCase
 
     public function testReturnsTheCommandIfTheUserIsAuthorizedToExecuteIt(): void
     {
-        $stage = new AuthorizationStage($this->authorizationChecker, new NullLogger());
+        $stage = new AuthorizationStage($this->authorizationChecker, $this->tokenStorage, new NullLogger());
         $this->tokenStorage->setToken(new UsernamePasswordToken('user', [], 'provider', ['ROLE_ADMIN']));
 
         SecurityAwareCommandStub::setAllowedRoles(['ROLE_ADMIN']);
@@ -76,7 +86,7 @@ class AuthorizationStageTest extends TestCase
 
     public function testGrantsAuthorizationIfTheUserHasAtLeastOneOfTheRequiredRoles(): void
     {
-        $stage = new AuthorizationStage($this->authorizationChecker, new NullLogger());
+        $stage = new AuthorizationStage($this->authorizationChecker, $this->tokenStorage, new NullLogger());
         $this->tokenStorage->setToken(new UsernamePasswordToken('user', [], 'provider', ['ROLE_ADMIN']));
 
         SecurityAwareCommandStub::setAllowedRoles(['ROLE_ADMIN', 'ROLE_OTHER_ROLE']);
