@@ -18,6 +18,12 @@ install: composer install
 
 script: make check
 
+matrix:
+  include:
+    - name: Test with lowest allowed dependency versions
+      php: '7.2'
+      install: composer update --prefer-lowest
+
 cache:
   directories:
     - $HOME/.composer/cache/files

@@ -48,6 +48,7 @@ final class TestKernel extends Kernel
                 $container->register('logger', NullLogger::class);
 
                 $container->register('command_handler', CommandHandlerStub::class)
+                    ->setPublic(true)
                     ->addArgument(new Reference('doctrine.orm.entity_manager'))
                     ->addArgument(new Reference('event_bus'))
                     ->addTag('command_handler', ['handles' => CommandStub::class]);
@@ -88,6 +89,11 @@ final class TestKernel extends Kernel
                 $container->loadFromExtension(
                     'security',
                     [
+                        'providers' => [
+                            'in_memory' => [
+                                'memory' => [],
+                            ],
+                        ],
                         'firewalls' => [
                             'stub' => [
                                 'http_basic' => null,
