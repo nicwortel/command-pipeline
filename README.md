@@ -1,6 +1,7 @@
 # Command Pipeline
 
 [![Build status](https://img.shields.io/travis/com/nicwortel/command-pipeline)](https://travis-ci.com/nicwortel/command-pipeline)
+[![Required PHP version](https://img.shields.io/packagist/php-v/nicwortel/command-pipeline)](https://github.com/nicwortel/command-pipeline/blob/master/composer.json)
 
 An in-memory Command Pipeline implementation for PHP. A command pipeline handles
 cross-cutting concerns in a CQRS application that works with command objects,
