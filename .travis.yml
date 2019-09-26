@@ -1,0 +1,23 @@
+language: php
+
+php:
+  - '7.2'
+  - '7.3'
+
+services:
+  - mysql
+
+env:
+  global:
+    - DATABASE_URL=mysql://travis@127.0.0.1:3306/test
+
+before_install:
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS test;'
+
+install: composer install
+
+script: make check
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
