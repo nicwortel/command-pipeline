@@ -22,7 +22,27 @@ pattern.
 - Wrapping command handling in a Doctrine database transaction
 - Dispatching emitted domain events to an event bus
 
+## Installation
+
+```bash
+composer require nicwortel/command-pipeline
+```
+
+If you are using Symfony, enable the CommandPipelineBundle:
+
+```php
+// config/bundles.php
+
+return [
+    // ...
+    NicWortel\CommandPipeline\Bundle\CommandPipelineBundle::class => ['all' => true],
+];
+```
+
 ## Usage
+
+Fetch the `command_pipeline` service from the service container or (recommended) inject the CommandPipeline into your
+application code:
 
 ```php
 $command = new MyCommand();
