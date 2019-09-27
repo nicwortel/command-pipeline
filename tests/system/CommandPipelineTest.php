@@ -9,7 +9,6 @@ use NicWortel\CommandPipeline\Authorization\ForbiddenException;
 use NicWortel\CommandPipeline\Tests\System\Entity\TestEntity;
 use NicWortel\CommandPipeline\Validation\InvalidCommandException;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
@@ -20,9 +19,17 @@ class CommandPipelineTest extends TestCase
      */
     private $entityManager;
 
+    /**
+     * @var TestKernel
+     */
+    private $kernel;
+
     protected function setUp(): void
     {
-        $this->entityManager = $this->createKernel()->getContainer()->get('doctrine.orm.entity_manager');
+        $this->kernel = new TestKernel();
+        $this->kernel->boot();
+
+        $this->entityManager = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
 
         $schemaTool = new SchemaTool($this->entityManager);
 
@@ -34,8 +41,7 @@ class CommandPipelineTest extends TestCase
 
     public function testFailsIfTheCommandIsInvalid(): void
     {
-        $kernel = $this->createKernel();
-        $commandPipeline = $kernel->getContainer()->get('command_pipeline');
+        $commandPipeline = $this->kernel->getContainer()->get('command_pipeline');
 
         $command = new CommandStub();
         $command->emailAddress = 'foo';
@@ -47,10 +53,9 @@ class CommandPipelineTest extends TestCase
 
     public function testFailsIfTheUserIsNotAuthorizedToExecuteTheCommand(): void
     {
-        $kernel = $this->createKernel();
-        $commandPipeline = $kernel->getContainer()->get('command_pipeline');
+        $commandPipeline = $this->kernel->getContainer()->get('command_pipeline');
 
-        $this->authenticateAsUserWithRoles(['ROLE_USER'], $kernel->getContainer()->get('security.token_storage'));
+        $this->authenticateAsUserWithRoles(['ROLE_USER'], $this->kernel->getContainer()->get('security.token_storage'));
 
         $command = new CommandStub();
         $command->emailAddress = 'info@example.com';
@@ -62,8 +67,7 @@ class CommandPipelineTest extends TestCase
 
     public function testPassesAValidAndAuthorizedCommandToTheCommandHandler(): void
     {
-        $kernel = $this->createKernel();
-        $container = $kernel->getContainer();
+        $container = $this->kernel->getContainer();
         $commandPipeline = $container->get('command_pipeline');
 
         $this->authenticateAsUserWithRoles(['ROLE_ADMIN'], $container->get('security.token_storage'));
@@ -82,8 +86,7 @@ class CommandPipelineTest extends TestCase
 
     public function testPublishesEventsAfterHandlingTheCommand(): void
     {
-        $kernel = $this->createKernel();
-        $container = $kernel->getContainer();
+        $container = $this->kernel->getContainer();
         $commandPipeline = $container->get('command_pipeline');
 
         $this->authenticateAsUserWithRoles(['ROLE_ADMIN'], $container->get('security.token_storage'));
@@ -97,14 +100,6 @@ class CommandPipelineTest extends TestCase
         $eventSubscriber = $container->get('event_subscriber');
 
         $this->assertInstanceOf(DummyEvent::class, $eventSubscriber->getEvent());
-    }
-
-    private function createKernel(): KernelInterface
-    {
-        $kernel = new TestKernel();
-        $kernel->boot();
-
-        return $kernel;
     }
 
     /**
