@@ -1,7 +1,7 @@
 # Command Pipeline
 
 [![Build status](https://img.shields.io/travis/com/nicwortel/command-pipeline)](https://travis-ci.com/nicwortel/command-pipeline)
-[![License](https://img.shields.io/github/license/nicwortel/command-pipeline.svg)](https://github.com/nicwortel/command-pipeline/blob/master/LICENSE.txt)
+[![License](https://img.shields.io/github/license/nicwortel/command-pipeline)](https://github.com/nicwortel/command-pipeline/blob/master/LICENSE.txt)
 [![Required PHP version](https://img.shields.io/packagist/php-v/nicwortel/command-pipeline)](https://github.com/nicwortel/command-pipeline/blob/master/composer.json)
 [![Current version](https://img.shields.io/packagist/v/nicwortel/command-pipeline)](https://packagist.org/packages/nicwortel/command-pipeline)
 
