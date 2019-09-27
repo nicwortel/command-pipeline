@@ -41,12 +41,33 @@ return [
 
 ## Usage
 
-Fetch the `command_pipeline` service from the service container or (recommended) inject the CommandPipeline into your
+Fetch the `command_pipeline` service from the service container or (recommended) inject the `CommandPipeline` into your
 application code:
 
 ```php
-$command = new MyCommand();
-$command->foo = 'bar';
+<?php
+declare(strict_types=1);
 
-$commandPipeline->process($command);
+use NicWortel\CommandPipeline\CommandPipeline;
+// ...
+
+class MyController
+{
+    private $commandPipeline;
+
+    public function __construct(CommandPipeline $commandPipeline)
+    {
+        $this->commandPipeline = $commandPipeline;
+    }
+
+    public function saveAction(): Response
+    {
+        $command = new MyCommand();
+        $command->foo = 'bar';
+
+        $this->commandPipeline->process($command);
+
+        // ...
+    }
+}
 ```
