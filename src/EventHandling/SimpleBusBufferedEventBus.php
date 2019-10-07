@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace NicWortel\CommandPipeline\EventHandling;
 
 use SimpleBus\Message\Bus\MessageBus;
+use function array_shift;
 
 final class SimpleBusBufferedEventBus implements MessageBus, BufferedEventBus
 {
@@ -32,7 +33,7 @@ final class SimpleBusBufferedEventBus implements MessageBus, BufferedEventBus
 
     public function flush(): void
     {
-        foreach ($this->buffer as $event) {
+        while ($event = array_shift($this->buffer)) {
             $this->eventBus->handle($event);
         }
     }
