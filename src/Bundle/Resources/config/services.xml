@@ -56,6 +56,8 @@
         </service>
 
         <service id="command_pipeline" alias="nicwortel.command_pipeline" public="true"/>
+
+        <service id="buffered_event_bus" alias="nicwortel.command_pipeline.buffered_event_bus" public="true"/>
     </services>
 
 </container>
