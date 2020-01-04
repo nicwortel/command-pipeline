@@ -12,10 +12,7 @@ use function dirname;
 final class CommandPipelineExtension extends Extension
 {
     /**
-     * @param mixed[]          $configs
-     * @param ContainerBuilder $container
-     *
-     * @return void
+     * @param mixed[] $configs
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
