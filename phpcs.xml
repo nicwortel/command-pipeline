@@ -5,7 +5,7 @@
 
     <rule ref="vendor/nicwortel/coding-standard/ruleset.xml"/>
 
-    <rule ref="SlevomatCodingStandard.TypeHints.TypeHintDeclaration">
+    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint">
         <properties>
             <property name="enableObjectTypeHint" value="false"/>
         </properties>
