@@ -21,8 +21,7 @@ final class StagedPipeline implements CommandPipeline
     private $logger;
 
     /**
-     * @param Stage[]         $stages
-     * @param LoggerInterface $logger
+     * @param Stage[] $stages
      */
     public function __construct(array $stages, LoggerInterface $logger)
     {
