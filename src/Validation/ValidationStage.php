@@ -51,6 +51,7 @@ final class ValidationStage implements Stage
     }
 
     /**
+     * @param ConstraintViolationListInterface<ConstraintViolationInterface> $violations
      * @return string[][]
      */
     private function normalizeViolations(ConstraintViolationListInterface $violations): array
