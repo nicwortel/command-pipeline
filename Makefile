@@ -4,11 +4,8 @@ vendor: composer.lock
 composer.lock: composer.json
 	composer update
 
-.PHONY: check lint static-analysis unit-tests coding-standards
-check: lint static-analysis unit-tests coding-standards
-
-lint: vendor
-	vendor/bin/parallel-lint src
+.PHONY: check static-analysis unit-tests coding-standards
+check: static-analysis unit-tests coding-standards
 
 static-analysis: vendor
 	vendor/bin/phpstan analyse
