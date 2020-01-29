@@ -57,27 +57,29 @@ final class AuthorizationStage implements Stage
             return $command;
         }
 
-        if (!$this->authorizationChecker->isGranted($command->getRolesAllowedToExecuteCommand())) {
-            $token = $this->tokenStorage->getToken();
+        foreach ($command->getRolesAllowedToExecuteCommand() as $role) {
+            if ($this->authorizationChecker->isGranted($role)) {
+                $this->logger->debug('The authenticated user is authorized to execute the command, continuing.');
 
-            $this->logger->error(
-                sprintf(
-                    'The current user does not have (one of) the role(s) required to execute the "%s" command, ' .
-                    'aborting processing.',
-                    get_class($command)
-                ),
-                [
-                    'username' => $token ? $token->getUsername() : null,
-                    'user_roles' => $token ? $token->getRoleNames() : null,
-                    'allowed_roles' => $command->getRolesAllowedToExecuteCommand(),
-                ]
-            );
-
-            throw ForbiddenException::forCommand(get_class($command));
+                return $command;
+            }
         }
 
-        $this->logger->debug('The authenticated user is authorized to execute the command, continuing.');
+        $token = $this->tokenStorage->getToken();
 
-        return $command;
+        $this->logger->error(
+            sprintf(
+                'The current user does not have (one of) the role(s) required to execute the "%s" command, ' .
+                'aborting processing.',
+                get_class($command)
+            ),
+            [
+                'username' => $token ? $token->getUsername() : null,
+                'user_roles' => $token ? $token->getRoleNames() : null,
+                'allowed_roles' => $command->getRolesAllowedToExecuteCommand(),
+            ]
+        );
+
+        throw ForbiddenException::forCommand(get_class($command));
     }
 }
