@@ -11,7 +11,7 @@ lint: vendor
 	vendor/bin/parallel-lint src
 
 static-analysis: vendor
-	vendor/bin/phpstan analyse --level=7 src/
+	vendor/bin/phpstan analyse --level=8 src/
 
 unit-tests: vendor
 	vendor/bin/phpunit
