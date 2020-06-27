@@ -58,6 +58,16 @@ final class TestKernel extends Kernel
                     ->addTag('event_subscriber', ['subscribes_to' => DummyEvent::class]);
 
                 $container->loadFromExtension(
+                    'framework',
+                    [
+                        'router' => [
+                            'resource' => 'kernel::loadRoutes',
+                            'type' => 'service',
+                        ],
+                    ]
+                );
+
+                $container->loadFromExtension(
                     'doctrine',
                     [
                         'dbal' => [
