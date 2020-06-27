@@ -1,9 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace NicWortel\CommandPipeline\EventHandling;
 
 use SimpleBus\Message\Bus\MessageBus;
+
 use function array_shift;
 
 final class SimpleBusBufferedEventBus implements MessageBus, BufferedEventBus
@@ -25,6 +27,8 @@ final class SimpleBusBufferedEventBus implements MessageBus, BufferedEventBus
 
     /**
      * @param object $message
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     public function handle($message): void
     {

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace NicWortel\CommandPipeline\Validation;
@@ -8,6 +9,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+
 use function array_reduce;
 use function count;
 use function get_class;

@@ -1,10 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace NicWortel\CommandPipeline;
 
 use Assert\Assertion;
 use Psr\Log\LoggerInterface;
+
 use function get_class;
 use function sprintf;
 

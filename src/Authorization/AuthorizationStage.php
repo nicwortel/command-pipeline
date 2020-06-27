@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace NicWortel\CommandPipeline\Authorization;
@@ -7,8 +8,10 @@ use NicWortel\CommandPipeline\Stage;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+
 use function get_class;
 use function sprintf;
+
 use const PHP_SAPI;
 
 final class AuthorizationStage implements Stage

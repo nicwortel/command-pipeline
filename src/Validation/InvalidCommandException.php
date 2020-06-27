@@ -1,9 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace NicWortel\CommandPipeline\Validation;
 
 use Exception;
+
 use function array_keys;
 
 final class InvalidCommandException extends Exception

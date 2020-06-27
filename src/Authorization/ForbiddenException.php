@@ -1,9 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace NicWortel\CommandPipeline\Authorization;
 
 use RuntimeException;
+
 use function sprintf;
 
 final class ForbiddenException extends RuntimeException

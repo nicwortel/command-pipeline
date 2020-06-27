@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace NicWortel\CommandPipeline\Doctrine;
@@ -7,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use NicWortel\CommandPipeline\Stage;
 use Psr\Log\LoggerInterface;
 use Throwable;
+
 use function get_class;
 
 final class TransactionalStageDecorator implements Stage
