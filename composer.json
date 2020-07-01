@@ -20,6 +20,7 @@
     },
     "require-dev": {
         "doctrine/annotations": "^1.7",
+        "liip/rmt": "^1.6",
         "mockery/mockery": "^1.2.3",
         "nicwortel/coding-standard": "^2.0",
         "phpstan/phpstan": "^0.12.7",
