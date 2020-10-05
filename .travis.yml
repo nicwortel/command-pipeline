@@ -1,8 +1,6 @@
 language: php
 
 php:
-  - '7.2'
-  - '7.3'
   - '7.4'
 
 services:
@@ -19,10 +17,11 @@ install: composer install
 
 script: make check
 
-matrix:
+jobs:
   include:
+    - php: '7.4'
     - name: Test with lowest allowed dependency versions
-      php: '7.2'
+      php: '7.4'
       install: composer update --prefer-lowest
 
 cache:
