@@ -10,11 +10,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 final class CommandStub implements SecurityAwareCommand
 {
     /**
-     * @var string
      *
      * @Assert\Email()
      */
-    public $emailAddress;
+    public string $emailAddress;
 
     /**
      * @inheritDoc

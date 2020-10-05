@@ -19,15 +19,9 @@ use Symfony\Component\Security\Core\Authorization\Voter\RoleVoter;
 
 class AuthorizationStageTest extends TestCase
 {
-    /**
-     * @var TokenStorage
-     */
-    private $tokenStorage;
+    private TokenStorage $tokenStorage;
 
-    /**
-     * @var AuthorizationChecker
-     */
-    private $authorizationChecker;
+    private AuthorizationChecker $authorizationChecker;
 
     protected function setUp(): void
     {

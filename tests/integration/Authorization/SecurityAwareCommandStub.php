@@ -11,7 +11,7 @@ final class SecurityAwareCommandStub implements SecurityAwareCommand
     /**
      * @var string[]
      */
-    private static $allowedRoles = [];
+    private static array $allowedRoles = [];
 
     /**
      * @param string[] $allowedRoles

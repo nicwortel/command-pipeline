@@ -10,15 +10,12 @@ use function array_shift;
 
 final class SimpleBusBufferedEventBus implements MessageBus, BufferedEventBus
 {
-    /**
-     * @var MessageBus
-     */
-    private $eventBus;
+    private MessageBus $eventBus;
 
     /**
      * @var object[]
      */
-    private $buffer = [];
+    private array $buffer = [];
 
     public function __construct(MessageBus $eventBus)
     {

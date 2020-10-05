@@ -13,20 +13,11 @@ use function get_class;
 
 final class TransactionalStageDecorator implements Stage
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var Stage
-     */
-    private $wrappedStage;
+    private Stage $wrappedStage;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(EntityManagerInterface $entityManager, Stage $wrappedStage, LoggerInterface $logger)
     {

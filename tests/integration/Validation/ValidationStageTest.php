@@ -15,10 +15,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ValidationStageTest extends TestCase
 {
-    /**
-     * @var ValidatorInterface
-     */
-    private $validator;
+    private ValidatorInterface $validator;
 
     protected function setUp(): void
     {

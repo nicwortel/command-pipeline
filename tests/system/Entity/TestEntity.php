@@ -12,18 +12,16 @@ use Doctrine\ORM\Mapping as ORM;
 class TestEntity
 {
     /**
-     * @var int
      *
      * @ORM\Id()
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    public $id;
+    public int $id;
 
     /**
-     * @var string
      *
      * @ORM\Column(type="string")
      */
-    public $emailAddress;
+    public string $emailAddress;
 }

@@ -9,9 +9,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 final class CommandStub
 {
     /**
-     * @var string
      *
      * @Assert\Email()
      */
-    public $emailAddress;
+    public string $emailAddress;
 }

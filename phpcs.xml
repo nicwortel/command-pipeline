@@ -9,10 +9,4 @@
     <file>tests/</file>
 
     <rule ref="NicWortel"/>
-
-    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
-        <properties>
-            <property name="enableNativeTypeHint" value="false"/>
-        </properties>
-    </rule>
 </ruleset>

@@ -9,15 +9,9 @@ use Psr\Log\LoggerInterface;
 
 final class EventDispatchingStage implements Stage
 {
-    /**
-     * @var BufferedEventBus
-     */
-    private $bufferedEventBus;
+    private BufferedEventBus $bufferedEventBus;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(BufferedEventBus $bufferedEventBus, LoggerInterface $logger)
     {

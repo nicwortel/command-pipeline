@@ -9,15 +9,9 @@ use SimpleBus\Message\Bus\MessageBus;
 
 final class CommandHandlingStage implements Stage
 {
-    /**
-     * @var MessageBus
-     */
-    private $commandBus;
+    private MessageBus $commandBus;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(MessageBus $commandBus, LoggerInterface $logger)
     {

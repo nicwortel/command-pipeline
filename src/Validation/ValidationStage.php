@@ -17,15 +17,9 @@ use function iterator_to_array;
 
 final class ValidationStage implements Stage
 {
-    /**
-     * @var ValidatorInterface
-     */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(ValidatorInterface $validator, LoggerInterface $logger)
     {

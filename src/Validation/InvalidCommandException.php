@@ -13,7 +13,7 @@ final class InvalidCommandException extends Exception
     /**
      * @var string[][]
      */
-    private $violations;
+    private array $violations;
 
     /**
      * @param string[][] $violations

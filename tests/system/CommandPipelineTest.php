@@ -15,15 +15,9 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class CommandPipelineTest extends TestCase
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var TestKernel
-     */
-    private $kernel;
+    private TestKernel $kernel;
 
     protected function setUp(): void
     {

@@ -10,15 +10,9 @@ use SimpleBus\Message\Bus\MessageBus;
 
 final class CommandHandlerStub
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var MessageBus
-     */
-    private $eventBus;
+    private MessageBus $eventBus;
 
     public function __construct(EntityManagerInterface $entityManager, MessageBus $eventBus)
     {

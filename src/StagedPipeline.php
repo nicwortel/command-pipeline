@@ -15,12 +15,9 @@ final class StagedPipeline implements CommandPipeline
     /**
      * @var Stage[]
      */
-    private $stages;
+    private array $stages;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     /**
      * @param Stage[] $stages
@@ -33,9 +30,6 @@ final class StagedPipeline implements CommandPipeline
         $this->logger = $logger;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function process(object $command): void
     {
         $commandName = get_class($command);

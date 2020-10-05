@@ -6,10 +6,7 @@ namespace NicWortel\CommandPipeline\Tests\System;
 
 final class EventSubscriberStub
 {
-    /**
-     * @var object|null
-     */
-    private $event;
+    private ?object $event = null;
 
     public function handle(DummyEvent $event): void
     {
