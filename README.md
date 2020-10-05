@@ -48,6 +48,7 @@ application code:
 
 ```php
 <?php
+
 declare(strict_types=1);
 
 use NicWortel\CommandPipeline\CommandPipeline;
@@ -55,7 +56,7 @@ use NicWortel\CommandPipeline\CommandPipeline;
 
 class MyController
 {
-    private $commandPipeline;
+    private CommandPipeline $commandPipeline;
 
     public function __construct(CommandPipeline $commandPipeline)
     {
