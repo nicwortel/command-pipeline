@@ -4,7 +4,7 @@
     "description": "A command pipeline for PHP",
     "license": "MIT",
     "require": {
-        "php": "^7.4",
+        "php": "^7.4 || ^8.0",
         "beberlei/assert": "^2.1 || ^3.0",
         "doctrine/doctrine-bundle": "^1.11 || ^2.0",
         "doctrine/orm": "^2.6.3",
